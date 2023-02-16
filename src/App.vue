@@ -1,8 +1,8 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-     <Header />
-     <List :todos="todos" />
+     <Header :addTodo="addTodo" />
+     <List :todos="todos" :deleteTodo="deleteTodo" />
      <Footer />
     </div>
   </div>
@@ -29,8 +29,16 @@ export default defineComponent({
         { id: 3, title: 'Audi', isCompleted: false }
       ]
     })
+    function addTodo(todo: Todo){
+      state.todos.unshift(todo)
+    }
+    function deleteTodo(index: number){
+      state.todos.splice(index, 1)
+    }
     return {
-      ...toRefs(state)
+      ...toRefs(state),
+      addTodo,
+      deleteTodo
     }
   },
 })
