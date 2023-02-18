@@ -1,17 +1,47 @@
 <template>
   <div class="todo-footer">
     <label>
-      <input type="checkbox" />
-      <span><span>已完成0</span> / 全部2</span>
+      <input type="checkbox" v-model="isCheckAll" />
+      <h2>{{ isCheckAll }}</h2>
+      <span><span>已完成{{count}}</span> / 全部{{todos.length}}</span>
     </label>
     <button class="btn btn-danger">all clear misson</button>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue"
+import { computed, defineComponent } from "vue"
+import { Todo } from '../types/todos'
 export default defineComponent({
   name: "Footer",
-  setup() {},
+  props: {
+    todos:{
+      type: Array as () => Todo[],
+      required: true
+    },
+    checkAll:{
+      type: Function,
+      required: true
+    },
+  },
+  setup(props) {
+    const count = computed(() => {
+      return props.todos.reduce((pre, todo) => pre +(todo.isCompleted? 1 : 0), 0)
+    })
+    const isCheckAll = computed({
+      get(){
+        console.log(isCheckAll)
+        return count.value > 0 && props.todos.length === count.value
+      },
+      set(val){
+        props.checkAll(val)
+        console.log(isCheckAll.value)
+      }
+    })
+    return{
+      count,
+      isCheckAll
+    }
+  },
 })
 </script>
 <style scoped>
