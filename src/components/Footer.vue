@@ -2,10 +2,9 @@
   <div class="todo-footer">
     <label>
       <input type="checkbox" v-model="isCheckAll" />
-      <h2>{{ isCheckAll }}</h2>
       <span><span>已完成{{count}}</span> / 全部{{todos.length}}</span>
     </label>
-    <button class="btn btn-danger">all clear misson</button>
+    <button class="btn btn-danger" @click="clearAll()">all clear misson</button>
   </div>
 </template>
 <script lang="ts">
@@ -22,6 +21,10 @@ export default defineComponent({
       type: Function,
       required: true
     },
+    clearAll:{
+      type: Function,
+      required: true
+    }
   },
   setup(props) {
     const count = computed(() => {
